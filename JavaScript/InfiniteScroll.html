@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla JavaScript Infinite Scroll</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .list-item {
+            border-bottom: 1px solid #ddd;
+            padding: 20px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="list">
+    <!-- List items will be added here dynamically -->
+</div>
+<div id="loading" class="loading">Loading...</div>
+
+<script>
+    const listElement = document.getElementById('list');
+    const loadingElement = document.getElementById('loading');
+
+    let isFetching = false;
+
+    // Function to simulate data fetching
+    function fetchMoreListItems() {
+        isFetching = true;
+        loadingElement.style.display = 'block';
+
+        // Simulate a delay
+        setTimeout(() => {
+            for (let i = 0; i < 10; i++) {
+                const listItem = document.createElement('div');
+                listItem.classList.add('list-item');
+                listItem.innerText = 'List Item ' + (document.querySelectorAll('.list-item').length + 1);
+                listElement.appendChild(listItem);
+            }
+            isFetching = false;
+            loadingElement.style.display = 'none';
+        }, 500);
+    }
+
+    // Event listener for infinite scroll
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50 && !isFetching) {
+            fetchMoreListItems();
+        }
+    });
+
+    // Initial fetch
+    fetchMoreListItems();
+</script>
+
+</body>
+</html>
